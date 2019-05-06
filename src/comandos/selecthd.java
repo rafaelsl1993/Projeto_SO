@@ -1,11 +1,15 @@
 package comandos;
 
+import main.main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import utils.Arquivo;
+import utils.Config;
 
 public class selecthd extends Command{
-
+    private Config mConfig = Config.getInstance();
+    
     public selecthd(String[] parameters){
         super(parameters);
     }
@@ -17,18 +21,25 @@ public class selecthd extends Command{
     @Override
     public void execute() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(constants.hdListFile));
-            String[] content;
+            BufferedReader reader = new BufferedReader(new FileReader(mConfig.HDList));
+            String[] splitLine;
             String temp;
             temp = reader.readLine();
             do{
-               if(temp != null && temp.isEmpty()){
+                if(temp != null && temp.isEmpty()){
                    throw new IOException();
-               }
-               content = temp.split(" ");
-               if(name.equals(content[0])){
-                    ProjetoSO01.content = content;
-                    System.out.println("Selected HD = " + content[0] + " Blocks = " + content[1] + " Bytes = "  + content[2]);
+                }
+                splitLine = temp.split(" ");
+                if(name.equals(splitLine[0])){
+                    
+                    main.arquivo = new Arquivo(splitLine[0], Integer.getInteger(splitLine[1]), Integer.getInteger(splitLine[2]));
+                    
+                    mConfig.indice = 0;
+                    mConfig.localMaior = 0;
+                    mConfig.localMenor = 0;
+                    mConfig.shellLine = (this.name + ":\\>");
+                    
+                    System.out.println("Selected HD = " + splitLine[0] + " Blocks = " + splitLine[1] + " Bytes = "  + splitLine[2]);
                     reader.close();
                     return;
                 }

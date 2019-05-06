@@ -31,6 +31,11 @@ public class createhd extends Command{
                 arq.append(name + " " + mBlock + " " + mByte +"\n");
                 arq.close();
                 arq = new FileWriter(mConfig.HDs + "/" + this.name);
+                for(int i = 0; i < mBlock; i++){
+                    for(int j = 0; j < mByte + mConfig.header; j++){
+                        arq.append('0');
+                    }
+                }
                 arq.close();
             } catch (IOException ex1) {
                 Logger.getLogger(createhd.class.getName()).log(Level.SEVERE, null, ex1);

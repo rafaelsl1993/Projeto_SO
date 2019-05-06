@@ -1,11 +1,18 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Arquivo {
     public Bloco file[];
     public int blocos;
     public int bytes;
     public String nome;
-    
     
     public Arquivo(String nome, int blocos, int bytes){
         this.nome = nome;
@@ -15,6 +22,13 @@ public class Arquivo {
         for(int i = 0; i < blocos; i++){
             file[i] = new Bloco(bytes);
         }
+
+        try {
+            readHD();
+        } catch (IOException ex) {
+            Logger.getLogger(Arquivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
     
     
@@ -52,7 +66,7 @@ public class Arquivo {
     }
     
     
-    void writeConteudo(byte conteudo[], int length, int atual, int i){		//Recursivo, Procura Bloco vazio e Grava
+    private void writeConteudo(byte conteudo[], int length, int atual, int i){		//Recursivo, Procura Bloco vazio e Grava
         for(int k = i + 1; k < blocos; k++){	//k é o bloco atual		/	i é bloco anterior
             if(file[k].estado == 0){		//Bloco Livre
                 file[k].estado = 2; 		//É conteúdo
@@ -71,7 +85,7 @@ public class Arquivo {
         }	
     }
 
-    int found(byte titulo[]){
+    public int found(byte titulo[]){
         int i,j;
 
         for(i = 0; i < blocos; i++){	//Itera Os blocos
@@ -93,4 +107,48 @@ public class Arquivo {
 
     }
 
+
+    private void readHD() throws IOException{
+        BufferedReader reader;
+        Config mConfig = Config.getInstance();
+        
+        reader = new BufferedReader(new FileReader(mConfig.HDs + "/" + this.nome));
+        
+        byte estado;
+        short local;
+        short continua;
+        byte content[] = new byte[bytes];
+        
+        for(int i = 0; i < blocos; i++){
+            estado = (byte)reader.read();
+            local = (short)reader.read();
+            continua = (short)reader.read();
+            for(int j = 0; j < bytes; j++){
+                content[j] = (byte)reader.read();
+            }
+            this.file[i].set(estado, local, continua, content);
+        }
+        
+        reader.close();
+    }
+    
+    public void save() throws IOException{
+        Config mConfig = Config.getInstance();
+        FileWriter arq = new FileWriter(mConfig.HDs + "/" + this.nome);
+        for(int i = 0; i < this.blocos; i++){
+            
+            arq.append((char) file[i].estado);
+            arq.append((char) file[i].local);
+            arq.append((char) file[i].continua);
+            
+            for(int j = 0; j < this.bytes; j++){
+                arq.append((char) file[i].conteudo[j]);
+            }
+            
+        }
+        
+        arq.close();
+         
+    }
+    
 }

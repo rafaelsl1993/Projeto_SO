@@ -10,6 +10,13 @@ public class Bloco {
         conteudo = new byte[size];
     }
     
+    public void set(byte estado, short local, short continua, byte[] conteudo){
+        this.estado = estado;
+        this.local = local;
+        this.continua = continua;
+        this.conteudo = conteudo;
+    }
+    
     public short converte(byte a, byte b){
         return ((short)((a*256) + b));
     }
@@ -25,4 +32,21 @@ public class Bloco {
         }
         return b;
     }
+    
+    public boolean compare(String compName){
+        int i;
+        for(i = 0; this.conteudo[i] != '\0'; i++){
+            if(this.conteudo[i] != compName.charAt(i)){
+                return false;
+            }
+        }
+        
+        if(compName.charAt(i) == '\0'){
+            return true;
+        }
+        
+        return false;
+        
+    }
+    
 }

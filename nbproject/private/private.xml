@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Bloco.java</file>
             <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Config.java</file>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/logs/Log.java</file>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Arquivo.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/main/main.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/cd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/selecthd.java</file>
         </group>
     </open-files>
 </project-private>

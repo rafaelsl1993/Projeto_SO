@@ -1,11 +1,17 @@
+package main;
+
 import comandos.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import utils.Arquivo;
 import utils.Config;
 
 public class main {
 
+    public static Arquivo arquivo;
+    
+    
     public static void main(String[] args) {
         Config mConfig = Config.getInstance();
         String TAG = "Main";
