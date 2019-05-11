@@ -31,6 +31,24 @@ public class Arquivo {
 
     }
     
+    public void newPath(byte titulo[]){
+        Config mConfig = Config.getInstance();
+        int i,j;
+        for(i = 0; i < blocos; i++){
+            if(file[i].estado == 0){		//Bloco Livre
+
+                file[i].local = (short)mConfig.indice;
+                file[i].estado = 3; 	//É pasta
+
+                for(j = 0; titulo[j] != '\0'; j++){
+                    file[i].conteudo[j] = titulo[j];
+
+                }
+                file[i].conteudo[j] = titulo[j];
+            }
+        }
+    }
+    
     
     public void write(byte titulo[], byte conteudo[]){
         Config mConfig = Config.getInstance();
@@ -51,18 +69,26 @@ public class Arquivo {
         for(i = 0; i < blocos; i++){
             if(file[i].estado == 0){		//Bloco Livre
 
-            file[i].local = file[i].converte(mConfig.localMaior, mConfig.localMenor);
-            file[i].estado = 1; 	//É título
+                file[i].local = file[i].converte(mConfig.localMaior, mConfig.localMenor);
+                file[i].estado = 1; 	//É título
 
-            for(j = 0; titulo[j] != '\0'; j++){
+                for(j = 0; titulo[j] != '\0'; j++){
+                    file[i].conteudo[j] = titulo[j];
+
+                }
                 file[i].conteudo[j] = titulo[j];
-
-            }
-            file[i].conteudo[j] = titulo[j];
+                j++;
+                byte[] sizeConteudo = Integer.toString(toWrite).getBytes();
+                
+                for(int k = 0; k < sizeConteudo.length; k++){
+                    file[i].conteudo[j++] = sizeConteudo[k];
+                }
+                file[i].conteudo[j] = '\0';
+                
             }
         }
         writeConteudo(conteudo, length, 0, i);			//Recursivo, Procura Bloco vazio e Grava
-		
+
     }
     
     
@@ -80,9 +106,12 @@ public class Arquivo {
                 if(atual < length){					//Se ainda não gravou tudo, chama recursão
                     writeConteudo(conteudo, length, atual, k);
                 }
+                else{
+                    file[k].continua = 0;
+                }
                 return;
             }
-        }	
+        }
     }
 
     public int found(byte titulo[]){

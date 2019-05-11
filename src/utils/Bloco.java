@@ -49,4 +49,19 @@ public class Bloco {
         
     }
     
+    @SuppressWarnings("empty-statement")
+    public int getSizeLastLine(){
+        int index = 0;
+        
+        while(conteudo[index++] != '\0');
+        
+        int sizeLastLine = 0;
+        
+        for(int i = index; conteudo[i] != '\0'; i++){
+            sizeLastLine = (sizeLastLine * 10) + (conteudo[i] - 48);
+        }
+        
+        return sizeLastLine;
+    }
+    
 }

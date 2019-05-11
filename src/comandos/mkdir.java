@@ -1,4 +1,5 @@
 package comandos;
+import main.main;
 
 public class mkdir extends Command{
 
@@ -12,7 +13,7 @@ public class mkdir extends Command{
     
     @Override
     public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        main.arquivo.newPath(this.name.getBytes());
     }
     
 }

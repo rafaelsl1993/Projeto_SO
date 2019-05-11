@@ -37,7 +37,7 @@ public class selecthd extends Command{
                     mConfig.indice = 0;
                     mConfig.localMaior = 0;
                     mConfig.localMenor = 0;
-                    mConfig.shellLine = (this.name + ":\\>");
+                    mConfig.shellLine = (this.name + ":/>");
                     
                     System.out.println("Selected HD = " + splitLine[0] + " Blocks = " + splitLine[1] + " Bytes = "  + splitLine[2]);
                     reader.close();

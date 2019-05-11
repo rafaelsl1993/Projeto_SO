@@ -1,5 +1,9 @@
 package comandos;
 
+import java.util.Arrays;
+import utils.Config;
+import main.main;
+
 public class dir extends Command{
 
     public dir() {
@@ -7,7 +11,16 @@ public class dir extends Command{
 
     @Override
     public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Config mConfig = Config.getInstance();
+        
+        for(int i = 0; i < main.arquivo.blocos; i++){
+            
+            if(main.arquivo.file[i].estado != 0 && main.arquivo.file[i].estado != 2 && main.arquivo.file[i].local == mConfig.indice){
+                System.out.println(Arrays.toString(main.arquivo.file[i].conteudo));
+            }
+            
+        }
+
     }
     
 }

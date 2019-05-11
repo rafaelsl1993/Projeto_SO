@@ -3,10 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Config.java</file>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/main/main.java</file>
-            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/cd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/mkdir.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/dirhd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/create.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/createhd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/typehd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/dir.java</file>
             <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/selecthd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Arquivo.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/utils/Bloco.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/cls.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/main/main.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/del.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/cd.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/type.java</file>
+            <file>file:/C:/Users/rafael/Desktop/Projeto_SO-Beta/ProjetoSO/src/comandos/formathd.java</file>
         </group>
     </open-files>
 </project-private>

@@ -20,36 +20,33 @@ public class cd extends Command{
         if("..".equals(name)){
             int i;
             for(i = mConfig.shellLine.length() - 1; i > 0; i--){
-                if(mConfig.shellLine.charAt(i) == '\\'){
+                if(mConfig.shellLine.charAt(i) == '/'){
                     break;
                 }
             }
             
             mConfig.shellLine = mConfig.shellLine.substring(0, i) + ">";
-            return;
+
         }else if(name.isEmpty()){
             mConfig.indice = 0;
             mConfig.localMaior = 0;
             mConfig.localMenor = 0;
-            mConfig.shellLine = (main.arquivo.nome + ":\\>");
-            return;
+            mConfig.shellLine = (main.arquivo.nome + ":/>");
+
         }
-        
-        for(int i = 0; i < main.arquivo.blocos; i++){
-            if(main.arquivo.file[i].estado == 3 && main.arquivo.file[i].compare(this.name)){
-                mConfig.indice = i;
-                byte[] local = main.arquivo.file[i].converte('L');
-                mConfig.localMaior = local[0];
-                mConfig.localMenor = local[1];
-                
-                int size = mConfig.shellLine.length();
-                String sub = mConfig.shellLine.substring(0,size-1);
-                mConfig.shellLine = (sub + "\\" + this.name + ">");
-                
-                return;
+        else{
+            for(int i = 0; i < main.arquivo.blocos; i++){
+                if(mConfig.indice == main.arquivo.file[i].local && main.arquivo.file[i].estado == 3 && main.arquivo.file[i].compare(this.name)){
+                    mConfig.indice = i;
+                    byte[] local = main.arquivo.file[i].converte('L');
+                    mConfig.localMaior = local[0];
+                    mConfig.localMenor = local[1];
+
+                    int size = mConfig.shellLine.length();
+                    String sub = mConfig.shellLine.substring(0,size-1);
+                    mConfig.shellLine = (sub + "/" + this.name + ">");
+                }
             }
         }
-            
     }
-    
 }
