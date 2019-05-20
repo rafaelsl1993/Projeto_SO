@@ -2,51 +2,40 @@ package utils;
 
 public class Bloco {
     public byte estado;
-    public short local;
-    public short continua;
-    public byte conteudo[];
+    public int local;
+    public int continua;
+    public char conteudo[];
+    private int size;
     
     public Bloco(int size){
-        conteudo = new byte[size];
+        this.size = size;
+        conteudo = new char[size];
     }
     
-    public void set(byte estado, short local, short continua, byte[] conteudo){
+    public void set(byte estado, int local, int continua, char[] conteudo){
         this.estado = estado;
         this.local = local;
         this.continua = continua;
-        this.conteudo = conteudo;
+        System.arraycopy(conteudo, 0, this.conteudo, 0, size);
     }
     
-    public short converte(byte a, byte b){
-        return ((short)((a*256) + b));
+    public int converte(int a, int b){
+        return ((int)((a*256) + b));
     }
     
-    public byte[] converte(char L){
-        byte[] b;
+    public int[] converte(char L){
+        int[] b;
         if(L == 'L'){
-            b = new byte[] {((byte)(local/256)), ((byte)(local%256))};
-
+            b = new int[] {((int)(local/256)), ((int)(local%256))};
         }
         else{
-             b = new byte[] {((byte)(continua/256)), ((byte)(continua%256))};
+             b = new int[] {((int)(continua/256)), ((int)(continua%256))};
         }
         return b;
     }
     
     public boolean compare(String compName){
-        int i;
-        for(i = 0; this.conteudo[i] != '\0'; i++){
-            if(this.conteudo[i] != compName.charAt(i)){
-                return false;
-            }
-        }
-        
-        if(compName.charAt(i) == '\0'){
-            return true;
-        }
-        
-        return false;
-        
+        return (compName.equals((new String(this.conteudo)).split("\0")[0]));
     }
     
     @SuppressWarnings("empty-statement")

@@ -5,14 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.main;
 
 public class Arquivo {
     public Bloco file[];
     public int blocos;
     public int bytes;
     public String nome;
+    
+    public Arquivo(){
+        
+    }
     
     public Arquivo(String nome, int blocos, int bytes){
         this.nome = nome;
@@ -31,75 +37,114 @@ public class Arquivo {
 
     }
     
-    public void newPath(byte titulo[]){
+    public void newPath(char titulo[]) throws IOException{
         Config mConfig = Config.getInstance();
         int i,j;
         for(i = 0; i < blocos; i++){
-            if(file[i].estado == 0){		//Bloco Livre
+            if(file[i].estado == '0'){		//Bloco Livre
 
-                file[i].local = (short)mConfig.indice;
-                file[i].estado = 3; 	//É pasta
+                file[i].local = mConfig.indice;
+                file[i].estado = '3'; 	//É pasta
 
-                for(j = 0; titulo[j] != '\0'; j++){
-                    file[i].conteudo[j] = titulo[j];
+                System.arraycopy(titulo, 0, file[i].conteudo, 0, titulo.length);
 
-                }
-                file[i].conteudo[j] = titulo[j];
+                file[i].conteudo[titulo.length] = '\0';
+                this.save();
+                return;
             }
         }
+        this.save();
     }
     
     
-    public void write(byte titulo[], byte conteudo[]){
+    public void write(char titulo[], char conteudo[]){
         Config mConfig = Config.getInstance();
         int length = 0;
-        for(int i = 0; conteudo[i] != '\0'; i++){
-            length++;
-        }
+        conteudo[conteudo.length - 1] = '\0';
+        length = conteudo.length;
+        
         if(length == 0){
             return;				//Nada a gravar
-        }else{
-            length++;			//Incrementa o \0 para gravação
         }
-
-        int toWrite = (length / bytes) + 1; // blocos a ocupar
-
+        int toWrite = (length / main.arquivo.bytes) + 1; // blocos a ocupar
+        
         int i,j;	//i caminha nos blocos	/	j caminha nos bytes
 
-        for(i = 0; i < blocos; i++){
-            if(file[i].estado == 0){		//Bloco Livre
+        for(i = 0; i < main.arquivo.blocos; i++){
+            if(file[i].estado == '0'){		//Bloco Livre
 
-                file[i].local = file[i].converte(mConfig.localMaior, mConfig.localMenor);
-                file[i].estado = 1; 	//É título
+                file[i].local = Config.getInstance().indice;
+                file[i].estado = '1'; 	//É título
 
-                for(j = 0; titulo[j] != '\0'; j++){
-                    file[i].conteudo[j] = titulo[j];
+                System.arraycopy(titulo, 0, file[i].conteudo, 0, titulo.length);
 
-                }
-                file[i].conteudo[j] = titulo[j];
-                j++;
-                byte[] sizeConteudo = Integer.toString(toWrite).getBytes();
+                file[i].conteudo[titulo.length] = '\0';
+
+                char[] sizeConteudo = String.valueOf(toWrite).toCharArray();
                 
-                for(int k = 0; k < sizeConteudo.length; k++){
-                    file[i].conteudo[j++] = sizeConteudo[k];
-                }
-                file[i].conteudo[j] = '\0';
+                System.arraycopy(sizeConteudo, 0, file[i].conteudo, titulo.length + 1, sizeConteudo.length);
                 
+                file[i].conteudo[titulo.length + 1 + sizeConteudo.length] = '\0';
+
+                break;
             }
         }
-        writeConteudo(conteudo, length, 0, i);			//Recursivo, Procura Bloco vazio e Grava
 
+        writeConteudo(conteudo, length, 0, i);			//Recursivo, Procura Bloco vazio e Grava
+        try {
+            save();
+        } catch (IOException ex) {
+            Logger.getLogger(Arquivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void write(char titulo[], char conteudo[], int size){
+        Config mConfig = Config.getInstance();
+        int length = 0;
+        conteudo[conteudo.length - 1] = '\0';
+        length = size + 1;
+        
+        int toWrite = (length / main.arquivo.bytes) + 1; // blocos a ocupar
+        
+        int i,j;	//i caminha nos blocos	/	j caminha nos bytes
+
+        for(i = 0; i < main.arquivo.blocos; i++){
+            if(file[i].estado == '0'){		//Bloco Livre
+
+                file[i].local = Config.getInstance().indice;
+                file[i].estado = '1'; 	//É título
+
+                System.arraycopy(titulo, 0, file[i].conteudo, 0, titulo.length);
+
+                file[i].conteudo[titulo.length] = '\0';
+
+                char[] sizeConteudo = String.valueOf(toWrite).toCharArray();
+                
+                System.arraycopy(sizeConteudo, 0, file[i].conteudo, titulo.length + 1, sizeConteudo.length);
+                
+                file[i].conteudo[titulo.length + 1 + sizeConteudo.length] = '\0';
+
+                break;
+            }
+        }
+
+        writeConteudo(conteudo, length, 0, i);			//Recursivo, Procura Bloco vazio e Grava
+        try {
+            save();
+        } catch (IOException ex) {
+            Logger.getLogger(Arquivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
-    private void writeConteudo(byte conteudo[], int length, int atual, int i){		//Recursivo, Procura Bloco vazio e Grava
-        for(int k = i + 1; k < blocos; k++){	//k é o bloco atual		/	i é bloco anterior
-            if(file[k].estado == 0){		//Bloco Livre
-                file[k].estado = 2; 		//É conteúdo
-                file[i].continua = (short)k;		//Link Bloco anterior com Bloco atual
+    private void writeConteudo(char conteudo[], int length, int atual, int i){		//Recursivo, Procura Bloco vazio e Grava
+        for(int k = i + 1; k < main.arquivo.blocos; k++){	//k é o bloco atual		/	i é bloco anterior
+            if(file[k].estado == '0'){		//Bloco Livre
+                file[k].estado = '2'; 		//É conteúdo
+                file[i].continua = k;		//Link Bloco anterior com Bloco atual
 
                 int j = 0;
-                while(j < bytes && atual < length){		//Grava conjunto de N Bytes ou até final do conteúdo a gravar
+                while(j < main.arquivo.bytes && atual < length){		//Grava conjunto de N Bytes ou até final do conteúdo a gravar
                     file[k].conteudo[j++] = conteudo[atual++];
                 }
 
@@ -107,28 +152,23 @@ public class Arquivo {
                     writeConteudo(conteudo, length, atual, k);
                 }
                 else{
-                    file[k].continua = 0;
+                    file[k].continua = 65534;
+                    file[k].estado = '4';
+                    System.out.println("GRAVOU TUDO");
                 }
                 return;
             }
         }
     }
 
-    public int found(byte titulo[]){
+    public int found(String titulo, int indice, char tipo){
+
         int i,j;
-
         for(i = 0; i < blocos; i++){	//Itera Os blocos
-            if(file[i].estado == 1 || file[i].estado == 3){
 
-                for(j = 0; file[i].conteudo[j] != '\0'; j++){	//Compara o Titulo/Pasta e retorna seu índice
-                    if(titulo[j] != file[i].conteudo[j]){
-                        break;
-                    }
-                }
-                if(titulo[j] == file[i].conteudo[j]){
-                    return i;
-                }
+            if(file[i].estado == tipo && file[i].local == indice && file[i].compare(titulo)){
 
+                return i;
             }
         }
 
@@ -144,16 +184,16 @@ public class Arquivo {
         reader = new BufferedReader(new FileReader(mConfig.HDs + "/" + this.nome));
         
         byte estado;
-        short local;
-        short continua;
-        byte content[] = new byte[bytes];
+        int local;
+        int continua;
+        char content[] = new char[bytes];
         
         for(int i = 0; i < blocos; i++){
             estado = (byte)reader.read();
-            local = (short)reader.read();
-            continua = (short)reader.read();
+            local = this.file[0].converte((int)reader.read(), (int)reader.read());
+            continua = this.file[0].converte((int)reader.read(), (int)reader.read());
             for(int j = 0; j < bytes; j++){
-                content[j] = (byte)reader.read();
+                content[j] = (char)reader.read();
             }
             this.file[i].set(estado, local, continua, content);
         }
@@ -165,10 +205,11 @@ public class Arquivo {
         Config mConfig = Config.getInstance();
         FileWriter arq = new FileWriter(mConfig.HDs + "/" + this.nome);
         for(int i = 0; i < this.blocos; i++){
-            
             arq.append((char) file[i].estado);
-            arq.append((char) file[i].local);
-            arq.append((char) file[i].continua);
+            arq.append((char) file[i].converte('L')[0]);
+            arq.append((char) file[i].converte('L')[1]);
+            arq.append((char) file[i].converte('C')[0]);
+            arq.append((char) file[i].converte('C')[1]);
             
             for(int j = 0; j < this.bytes; j++){
                 arq.append((char) file[i].conteudo[j]);

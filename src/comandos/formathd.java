@@ -21,7 +21,7 @@ public class formathd extends Command{
     public void execute() {
         
         for(int i = 0; i < main.arquivo.blocos; i++){
-            main.arquivo.file[i].estado = 0;
+            main.arquivo.file[i].estado = '0';
         }
         
         try {

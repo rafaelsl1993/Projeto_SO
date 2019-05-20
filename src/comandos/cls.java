@@ -18,10 +18,12 @@ public class cls extends Command{
     public void execute() {
         try{
         if( System.getProperty( "os.name" ).startsWith( "Window" ) )
-                Runtime.getRuntime().exec("cls");
+                new ProcessBuilder("cmd","/c","cls").inheritIO().start().waitFor();
         else
                 Runtime.getRuntime().exec("clear");
         } catch (IOException ex) {
+            Logger.getLogger(cls.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(cls.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

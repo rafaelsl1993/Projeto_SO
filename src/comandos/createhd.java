@@ -22,7 +22,7 @@ public class createhd extends Command{
     @Override
     public void execute(){
         try {
-            FileReader arq = new FileReader(mConfig.HDs + "/" + name);
+            FileReader arq = new FileReader(mConfig.HDs + "\\" + name);
             System.out.println("hd already exists");
             arq.close();
         } catch (IOException ex) {
@@ -30,7 +30,7 @@ public class createhd extends Command{
                 FileWriter arq = new FileWriter(mConfig.HDList, true);
                 arq.append(name + " " + mBlock + " " + mByte +"\n");
                 arq.close();
-                arq = new FileWriter(mConfig.HDs + "/" + this.name);
+                arq = new FileWriter(mConfig.HDs + "\\" + this.name);
                 for(int i = 0; i < mBlock; i++){
                     for(int j = 0; j < mByte + mConfig.header; j++){
                         arq.append('0');

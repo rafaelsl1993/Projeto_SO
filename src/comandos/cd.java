@@ -18,34 +18,39 @@ public class cd extends Command{
         Config mConfig = Config.getInstance();
         
         if("..".equals(name)){
+            if(mConfig.indice == 65534){
+                return;
+            }
             int i;
             for(i = mConfig.shellLine.length() - 1; i > 0; i--){
                 if(mConfig.shellLine.charAt(i) == '/'){
                     break;
                 }
             }
-            
-            mConfig.shellLine = mConfig.shellLine.substring(0, i) + ">";
-
+            mConfig.indice = main.arquivo.file[mConfig.indice].local;
+            if(mConfig.indice == 65534){
+                mConfig.shellLine = mConfig.shellLine.substring(0, i) + "/>";
+            }else{
+                mConfig.shellLine = mConfig.shellLine.substring(0, i) + ">";
+            }
         }else if(name.isEmpty()){
-            mConfig.indice = 0;
+            mConfig.indice = 65534;
             mConfig.localMaior = 0;
             mConfig.localMenor = 0;
             mConfig.shellLine = (main.arquivo.nome + ":/>");
 
         }
         else{
-            for(int i = 0; i < main.arquivo.blocos; i++){
-                if(mConfig.indice == main.arquivo.file[i].local && main.arquivo.file[i].estado == 3 && main.arquivo.file[i].compare(this.name)){
-                    mConfig.indice = i;
-                    byte[] local = main.arquivo.file[i].converte('L');
-                    mConfig.localMaior = local[0];
-                    mConfig.localMenor = local[1];
-
-                    int size = mConfig.shellLine.length();
-                    String sub = mConfig.shellLine.substring(0,size-1);
+            int i = main.arquivo.found(this.name, mConfig.indice, '3');
+            if(i != -1){
+                int size = mConfig.shellLine.length();
+                String sub = mConfig.shellLine.substring(0,size-1);
+                if(mConfig.indice == 65534){
+                    mConfig.shellLine = (sub + this.name + ">");
+                }else{
                     mConfig.shellLine = (sub + "/" + this.name + ">");
                 }
+                mConfig.indice = i;
             }
         }
     }

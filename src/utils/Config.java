@@ -2,9 +2,10 @@ package utils;
 
 public class Config {
     public int header = 5;
-    public int indice = 0;
+    public int indice = 65534;
     public String shellLine = new String(">");
-    public String HDList = "hdlist/hdlist.txt";
+    public String HDListPath = "hdlist\\";
+    public String HDList = HDListPath + "hdlist.txt";
     public String HDs = "hds";
     public String logFile = "log.txt";
     public byte localMaior = 0;

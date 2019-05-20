@@ -11,7 +11,7 @@ public class create extends Command{
     }
 
     public create() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
@@ -21,20 +21,19 @@ public class create extends Command{
                 
                 int flag = 0;
                 ArrayList<String> temp = new ArrayList<>();
-                Scanner S =new Scanner(System.in);
+                Scanner S = new Scanner(System.in);
                 try{
                     while(temp.add(S.nextLine())){
                         temp.add("\n");
                     }
+                    
                 }catch(Exception e){
                     String toCopy = new String();
                     
                     for (String temp1 : temp) {
                         toCopy = toCopy.concat(temp1);
                     }
-                    
-                    main.arquivo.write(this.name.getBytes(), toCopy.getBytes());
-                    
+                    main.arquivo.write(this.name.toCharArray(), toCopy.toCharArray());
                     new ProcessBuilder("cmd","/c","cls").inheritIO().start().waitFor();
                 }
         }catch(Exception E){

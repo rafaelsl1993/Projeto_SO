@@ -9,34 +9,19 @@ public class type extends Command{
     }
 
     public type() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
     public void execute() {
         Config mConfig = Config.getInstance();
-        
-        int index = main.arquivo.found(this.name.getBytes());
-        
-        if(main.arquivo.file[index].estado == 1 && main.arquivo.file[index].local == mConfig.indice){
-            
-            for(int i = index; ;){
-                if(main.arquivo.file[i].continua != 0){
-                    i = main.arquivo.file[i].continua;
-                }
-                else{
-                    for(int j = 0; j < main.arquivo.file[index].getSizeLastLine(); j++){
-                        System.out.print(main.arquivo.file[i].conteudo[j]);
-                    }
-                    return;
-                }
-                for(int j = 0; j < main.arquivo.bytes; j++){
-                    System.out.print(main.arquivo.file[i].conteudo[j]);
-                    
-                }
-            }
+        int index = main.arquivo.found(this.name, mConfig.indice, '1');
+        int i = main.arquivo.file[index].continua;
+        while(main.arquivo.file[i].estado != '4'){
+            System.out.print(new String(main.arquivo.file[i].conteudo));
+            i = main.arquivo.file[i].continua;
         }
-        
+        System.out.println((new String(main.arquivo.file[i].conteudo)).split("\0")[0]);
     }
     
 }

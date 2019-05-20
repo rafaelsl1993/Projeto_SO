@@ -18,6 +18,9 @@ public abstract class Command {
         if(size>1){
            this.name = parameters[1];
         }
+        if(size == 1){
+            this.name = "";
+        }
     }
 
     public Command(String[] parameters) {

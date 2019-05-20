@@ -31,14 +31,11 @@ public class selecthd extends Command{
                 }
                 splitLine = temp.split(" ");
                 if(name.equals(splitLine[0])){
-                    
-                    main.arquivo = new Arquivo(splitLine[0], Integer.getInteger(splitLine[1]), Integer.getInteger(splitLine[2]));
-                    
-                    mConfig.indice = 0;
+                    main.novo(splitLine[0], Integer.valueOf(splitLine[1]), Integer.valueOf(splitLine[2]));
+                    mConfig.indice = 65534;
                     mConfig.localMaior = 0;
                     mConfig.localMenor = 0;
                     mConfig.shellLine = (this.name + ":/>");
-                    
                     System.out.println("Selected HD = " + splitLine[0] + " Blocks = " + splitLine[1] + " Bytes = "  + splitLine[2]);
                     reader.close();
                     return;
@@ -48,7 +45,6 @@ public class selecthd extends Command{
             
             System.out.println("hd does not exist\n");
             reader.close();
-            
         } catch (IOException ex) {
                 System.out.println("hd does not exist\n");
             }
